@@ -18,7 +18,6 @@ from gcdf1.utils.utils import (
     append_to_values,
     count_nested_dict_values,
     get_nested_values,
-    nested_defaultdict,
 )
 
 _METRIC_NAMES = ["f1", "precision", "recall"]
@@ -46,9 +45,7 @@ def aggregate_values(mapping: dict, agg_fcn: Literal["mean", "prod"]):
 
 
 def metrics_dict_factory():
-    """Factory function that returns a two level nested dictionary for storing the
-    values of a metric at intent level.
-    """
+    """Factory function that returns a two level nested dictionary for storing metric values."""
     return defaultdict(lambda: defaultdict(list))
 
 
@@ -63,128 +60,10 @@ def asdict(tracker):
     return converted
 
 
-def metadata_store_factory() -> dict:
-    return {
-        "igcd_f1": {
-            "preprocessed_user_constraints": nested_defaultdict(list, depth=4),
-            "preprocessed_sys_constraints": nested_defaultdict(list, depth=4),
-            "sys_preempted_constraint": nested_defaultdict(list, depth=2),
-            "preprocessed_sys_nlu": nested_defaultdict(list, depth=4),
-            "wrong_taxi_annotations": nested_defaultdict(list, depth=1),
-            "single_repetitions_nog": nested_defaultdict(list, depth=2),
-            "missed_constraints": nested_defaultdict(list, depth=2),
-            "informed_wrong_value": nested_defaultdict(list, depth=2),
-            "failed_dialogue": nested_defaultdict(list, depth=2),
-            "missed_domain": nested_defaultdict(list, depth=1),
-            "multiple_constraint_informs": {
-                "elicited_by_sys_question": nested_defaultdict(list, depth=2),
-                "failed_sys_nlu": nested_defaultdict(list, depth=2),
-                "elicited_by_booking_failure": nested_defaultdict(list, depth=2),
-                "elicited_by_no_offers": nested_defaultdict(list, depth=2),
-                "nobook_validation_failure": nested_defaultdict(list, depth=2),
-                "nooffer_validation_failure": nested_defaultdict(list, depth=2),
-                "confirmed_choice_params": nested_defaultdict(list, depth=2),
-                "repeated_while_requesting_info": nested_defaultdict(list, depth=2),
-                "repeated_while_booking": nested_defaultdict(list, depth=2),
-                "repeated_when_answering_request": nested_defaultdict(list, depth=2),
-                "switched_between_domains": nested_defaultdict(list, depth=2),
-                "unmatched": nested_defaultdict(list, depth=2),
-                "wrong_taxi_annotations": nested_defaultdict(list, depth=2),
-            },
-            "constraints_not_in_goal": {
-                "auto_matched_slot": nested_defaultdict(list, depth=2),
-                "auto_matched_value": nested_defaultdict(list, depth=2),
-                "auto_matched_slot_value_pair": nested_defaultdict(list, depth=2),
-                "first_turn": nested_defaultdict(list, depth=2),
-                "elicited_by_sys_question": nested_defaultdict(list, depth=2),
-                "elicited_by_sys_offer": nested_defaultdict(list, depth=2),
-                "elicited_by_booking_failure": nested_defaultdict(list, depth=2),
-                "elicited_by_booking_acceptance": nested_defaultdict(list, depth=2),
-                "elicited_by_recommendation": nested_defaultdict(list, depth=2),
-                "unmatched": nested_defaultdict(list, depth=2),
-            },
-            "slots_missing_from_cmap": nested_defaultdict(list, depth=3),
-            "dial_id": nested_defaultdict(list, depth=1),
-            "repeated_inform": nested_defaultdict(list, depth=2),
-            "informed_domains_outside_goals": nested_defaultdict(list, depth=2),
-            "repetitions_warning": nested_defaultdict(list, depth=2),
-        },
-        "rgcd_f1": {
-            "dial_id": nested_defaultdict(list, depth=1),
-            "multiple_slot_requests": {
-                "system_req_nlu_failure": nested_defaultdict(list, depth=2),
-                "repeated_despite_receiving_answer": nested_defaultdict(list, depth=2),
-                "user_prempted_request": nested_defaultdict(list, depth=2),
-                "delayed_response": nested_defaultdict(list, depth=2),
-                "spurious_annotation": nested_defaultdict(list, depth=2),
-            },
-            "requests_not_in_goal": nested_defaultdict(list, depth=2),
-            "requested_domains_outside_goals": nested_defaultdict(list, depth=2),
-            "provision_entire_domain": nested_defaultdict(list, depth=2),
-            "provision_slots": nested_defaultdict(list, depth=2),
-            "auto_ref": defaultdict(list),
-            "multiple_req": nested_defaultdict(list, depth=2),
-            "repetitions_warning": nested_defaultdict(list, depth=2),
-        },
-    }
-
-
 @dataclass
 class MetricsTracker:
-    _metadata_to_agg = [
-        ["igcd_f1", "dial_id"],
-        ["igcd_f1", "preprocessed_user_constraints"],
-        ["igcd_f1", "preprocessed_sys_constraints"],
-        ["igcd_f1", "preprocessed_sys_nlu"],
-        ["igcd_f1", "sys_preempted_constraint"],
-        ["igcd_f1", "single_repetitions_nog"],
-        ["igcd_f1", "missed_constraints"],
-        ["igcd_f1", "informed_wrong_value"],
-        ["igcd_f1", "failed_dialogue"],
-        ["igcd_f1", "missed_domain"],
-        ["igcd_f1", "constraints_not_in_goal", "auto_matched_slot"],
-        ["igcd_f1", "constraints_not_in_goal", "auto_matched_value"],
-        ["igcd_f1", "constraints_not_in_goal", "auto_matched_slot_value_pair"],
-        ["igcd_f1", "constraints_not_in_goal", "elicited_by_sys_question"],
-        ["igcd_f1", "multiple_constraint_informs", "elicited_by_sys_question"],
-        ["igcd_f1", "multiple_constraint_informs", "elicited_by_no_offers"],
-        ["igcd_f1", "multiple_constraint_informs", "nobook_validation_failure"],
-        ["igcd_f1", "multiple_constraint_informs", "nooffer_validation_failure"],
-        ["igcd_f1", "multiple_constraint_informs", "confirmed_choice_params"],
-        ["igcd_f1", "multiple_constraint_informs", "repeated_while_requesting_info"],
-        ["igcd_f1", "multiple_constraint_informs", "repeated_while_booking"],
-        ["igcd_f1", "multiple_constraint_informs", "repeated_when_answering_request"],
-        ["igcd_f1", "multiple_constraint_informs", "switched_between_domains"],
-        ["igcd_f1", "multiple_constraint_informs", "wrong_taxi_annotations"],
-        ["igcd_f1", "multiple_constraint_informs", "unmatched"],
-        ["igcd_f1", "multiple_constraint_informs", "failed_sys_nlu"],
-        ["igcd_f1", "constraints_not_in_goal", "elicited_by_sys_offer"],
-        ["igcd_f1", "multiple_constraint_informs", "elicited_by_booking_failure"],
-        ["igcd_f1", "constraints_not_in_goal", "elicited_by_booking_failure"],
-        ["igcd_f1", "constraints_not_in_goal", "elicited_by_booking_acceptance"],
-        ["igcd_f1", "constraints_not_in_goal", "elicited_by_recommendation"],
-        ["igcd_f1", "constraints_not_in_goal", "unmatched"],
-        ["igcd_f1", "wrong_taxi_annotations"],
-        ["igcd_f1", "repeated_inform"],
-        ["igcd_f1", "constraints_not_in_goal", "first_turn"],
-        ["igcd_f1", "repetitions_warning"],
-        ["igcd_f1", "informed_domains_outside_goals"],
-        ["rgcd_f1", "requests_not_in_goal"],
-        ["rgcd_f1", "requested_domains_outside_goals"],
-        ["rgcd_f1", "provision_entire_domain"],
-        ["rgcd_f1", "provision_slots"],
-        ["rgcd_f1", "auto_ref"],
-        ["rgcd_f1", "multiple_req"],
-        ["rgcd_f1", "multiple_slot_requests", "delayed_response"],
-        ["rgcd_f1", "multiple_slot_requests", "user_prempted_request"],
-        ["rgcd_f1", "multiple_slot_requests", "repeated_despite_receiving_answer"],
-        ["rgcd_f1", "multiple_slot_requests", "system_req_nlu_failure"],
-        ["rgcd_f1", "multiple_slot_requests", "spurious_annotation"],
-        ["rgcd_f1", "dial_id"],
-        ["rgcd_f1", "repetitions_warning"],
-    ]
 
-    # TODO: CAN WE CREATE THIS AT RUNTIME THROUGH THE NAMESPACE?
+    metadata_to_agg = ()
 
     def __iadd__(self, other):
         """In place addition operator for the tracker."""
@@ -195,7 +74,7 @@ class MetricsTracker:
                 raise ValueError("Metrics must match for accumulation!")
         for metric in self_metrics:
             if metric == "metadata":
-                for key in self._metadata_to_agg:
+                for key in self.metadata_to_agg:
                     current_info = get_nested_values(getattr(self, metric), (key,))[0]
                     new_info = get_nested_values(getattr(other, metric), (key,))[0]
                     assert isinstance(new_info, dict)
@@ -296,8 +175,9 @@ class MetricsTracker:
 def get_metrics_tracker(
     metrics: list[str],
     metrics_store_factory: Optional[Union[dict[str, Callable], Callable]] = None,
-    metadata=False,
+    metadata: bool = False,
     metadata_store_factory: Optional[Callable] = None,
+    metadata_to_agg: tuple[list[str], ...] = (),
 ):
     """Initialises a metrics tracker across dialogues.
 
@@ -325,6 +205,10 @@ def get_metrics_tracker(
     metadata_store_factory
         If not specified, the metadata field is a dictionary. Otherwise, the metadata will be stored in the object
         returned by calling  this function with no arguments. The factory should return an instance of dict.
+    metadata_to_agg:
+        This tuple should contain lists of coma separated strings, indicating which fields in the underlying data store
+        are to be aggregated. See gcdf1.utils.multiwoz_output for an example. This argument is necessary to ensure the
+        hierarchical output is extended as each dialogue is evaluated via the MetricTracker's __iadd__ method.
     """
 
     if not isinstance(metrics_store_factory, dict):
@@ -371,6 +255,7 @@ def get_metrics_tracker(
         "DialogueMetricsTracker",
         fields,
         bases=(MetricsTracker,),
+        namespace={"metadata_to_agg": metadata_to_agg},
     )
 
 

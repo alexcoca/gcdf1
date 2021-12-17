@@ -77,7 +77,7 @@ def dict_factory():
     return defaultdict(list)
 
 
-def get_nested_values(mapping: dict, nested_keys: tuple[list, ...]):
+def get_nested_values(mapping: dict, nested_keys: tuple[Union[list, tuple], ...]):
     """Returns a list of values for nested keys. A nested key is specified as a list."""
     vals = []
     # key is a nested key in a dict represented as a list

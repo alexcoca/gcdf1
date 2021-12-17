@@ -15,8 +15,8 @@ from gcdf1.utils.evaluator import (
     get_dataset_as_dict,
     get_metrics_tracker,
     load_canonical_map,
-    metadata_store_factory,
 )
+from gcdf1.utils.multiwoz_output import metadata_store_factory, metadata_to_agg
 from gcdf1.utils.utils import get_commit_hash, get_datetime
 
 FLAGS = flags.FLAGS
@@ -111,6 +111,7 @@ def get_reference_free_metrics(dataset_hyp: dict, config: DictConfig):
         metrics_store_factory=user_metrics_store_factory,
         metadata=True,
         metadata_store_factory=metadata_store_factory,
+        metadata_to_agg=metadata_to_agg,
     )()
     per_dial_metrics = {}
     goal_req_slots, act_req_slots = set(), set()
@@ -125,6 +126,7 @@ def get_reference_free_metrics(dataset_hyp: dict, config: DictConfig):
             metrics_store_factory=user_metrics_store_factory,
             metadata=True,
             metadata_store_factory=metadata_store_factory,
+            metadata_to_agg=metadata_to_agg,
         )()
         igcd_f1_scores = compute_igcdf1(
             dial_hyp,
