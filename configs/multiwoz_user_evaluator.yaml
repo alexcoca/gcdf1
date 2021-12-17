@@ -1,0 +1,171 @@
+rgcd_f1:
+
+  # warn and store dialogues when the same constraint is
+  # repeated more than this number of times
+  repetitions_warning: 4
+
+  repetitions:
+    # true: multiple requests of the same slot are counted as FP
+    count_fp: true
+    system_behaviour:
+      # true: only count duplicates if the system understands correctly the request
+      validate_nlu: true
+      # only count as duplicate if the system has actually informed the request when asked.
+      validate_policy: true
+    # int: if the sys NLU or policy fails to repeatedly provide the result,
+    # a good user moves on after a few tries and tries to fulfill the rest of the goal. If the user
+    # requests the same slot more than `user_repeats_to_penalty` when the sys NLU is incorrect or does
+    # not receive the information from the system, it will start to decrease its F1.
+    repeats_to_penalty: 3
+
+  missing_requests:
+    # true: check if the system directly informs about slots in goal before the user has a chance to ask
+    system_provision: true
+    # specify the domains for which this behaviour should be accounted for
+    provision_domains:
+      - taxi
+      - restaurant
+      - hotel
+      - attraction
+      - train
+  # use this list to add slots that are missing from goal annotation for requested slots to the ground truth.
+  # These would otherwise reduce the requests F1 as they would be counted as false positives. In MultiWOZ 2.1
+  # this situation occurs because the users are instructed to request the `ref` slot, which is not annotated in
+  # goals. Only valid for transactional dialogues (aka where the user makes a booking)
+  auto_add_to_ref:
+    - restaurant-ref
+    - hotel-ref
+    - train-ref
+    - train-Ref
+    - ref
+
+igcd_f1:
+
+  # warn and store dialogues when the same constraint is
+  # repeated more than this number of times
+  repetitions_warning: 4
+
+  repetitions:
+    # true: multiple requests of the same slot are counted as FP
+    count_fp: true
+    # the maximum number of times a constraint can be repeated before
+    # incurring a penalty. This number is used to increase the true
+    # positive counts per constraint, only if the repetition was triggered
+    # by valid system or user behaviours. See documentation below for
+    # behaviours taken into account
+    max_repetitions: 6
+    sys_behaviours:
+      # system requests a constraint that was already informed by user
+      requests: true
+      # systems informs the user of a booking failure
+      booking_failure_response: true
+      # system informs the user there are no entities that match their constraints
+      no_offers: true
+      # check if the system NLU recognised the constraint. Recommend to use only
+      #  if canonical map is available if the SYS NLU
+      #  is based on slot tagging as then the slot value will be extracted
+      #  from user sentence directly and the NLU validation is not likely to
+      #  work well if fuzzy matching does not have a range of possible values
+      #  to match against.
+      nlu: true
+    user_behaviours:
+      # accounts for the fact the user might repeat constraints when presented with options
+      # (e.g., S: We have 2 options, The Oak Bistro and The Ivy. U: So long they are expensive, I don't care.)
+      offer_checks: true
+      # accounts for repeated constraints when more info is required. Example:
+      # assume the user requested to book at table at certain venue and then continues.
+      # "May I have the address for The Cow Pizza Kitchen and Bar please?".
+      repeats_while_requesting_info: true
+      # accounts for repetitions that occur while a booking is being discussed. This can be
+      # a confirmation of booking details (Yes, book it for 5 people!) or other properties of
+      # an entity offered by the system
+      repeats_while_booking: true
+      # accounts for situations when info is repeated in consecutive turns
+      #    U: I am looking for British food in the centre?
+      #    S: There are 8, any preferences?
+      #    U: Moderately priced british restaurant, please.
+      repeats_when_answering_request: true
+      # repetitions can happen because the user gives multiple tasks
+      # at once whereas the system only handles one task, in parallel (usually)
+      # nb: this confounds wrong coref annotations
+      proposes_multiple_domains: true
+
+  # check previous system turn for a requested slot before penalising
+  # user for informing slot-value pairs not in goal
+  constraints_not_in_goal:
+    # do not count as false positive if:
+    #   - (offers): the user informs a constraint to confirm/select an option given by the system. Includes:
+    #                   - accepting certain constraints mentioned by the system ("We have two pools in east, one in the south", "Great, postcode for the one in the south plese")
+    #                   - selecting entities ("Lovell Lodge and Hamilton Lodge match your requirements", "I'd like Lovell Lodge for two nights.")
+    #   - (questions) the user responds to a system question ("Do you want parking?" "It does not really matter.")
+    #   - (booking_failure_response) the user selects a new entity if a booking did not succeed
+    sys_checks:
+      # system offers a particular slot in previous sys_context_size turns
+      offers: true
+      # system asks for a slot that is not in the goal
+      requests: false
+      # there is a booking failure and another entity is selected by user.
+      booking_failure_response: true
+      # the system makes a booking offer in the previous turn. User may state entity names to accept/decline.
+      booking_request_response: true
+      # The system makes a recommendation and the user follows up on it, specifying its name.
+      recommendations: true
+      # number of system turns checked to see if system made an offer if the user
+      # informs a constraint not in goal at turn t. Example: if t=6 and sys_context_size=2,
+      # then turns 5, and 3 will be checked to see if system offered the slot to the
+      # user (by informing them!)
+      sys_context_size: 2
+    # maximum number of times a constraint outside the goal should be repeated by the user
+    max_repetitions: 6
+    # Do not penalise mentions taxi domain departure/destination constraints as they are not included in the goal.
+    # User is not penalised for stating destination if goal specifies arrival time (arriveBy), and not penalised
+    # for stating departure place if departure time (leaveAt slot) is in goal.
+    # Other cases are considered goal violations.
+    auto_matching:
+      # match a maximum number so as dialogue loops score low
+      max_repetions_matched: 6
+      # slots matched regardless of value
+      slots:
+        taxi:
+          - departure
+          - destination
+      # values matched if they appear
+      vals:
+        # This values is considered correct if stated for a constraint that is not in the goal as it is usually
+        # the result of a system question.
+        - dontcare
+      slot_value_pairs: {}
+    # consider a situation where the system requests some information outside the
+    # user goal and gets stuck (e.g., does not understand the response). A good
+    # user model should not get stuck in a loop, but direct the conversation towards
+    # other part of the goal
+    max_user_responses: 6
+
+  # dialogue failure is detected if there is a `no-offer` dialogue act
+  # after the user informed the last constraint domain.
+  empty_db_result:
+    # if true, remove requested slots from goal as the user cannot
+    # request information if there is no entity to discuss
+    compensate_request: true
+    compensate_missed_constraints: true
+
+  # search for situations where the constraint is provided by sys
+  # before user expresses it
+  compensate_preemption: true
+
+  value_matching:
+    # set to false to disable value pre-processing
+    use_fuzzy_match: true
+    fuzzy_match_threshold: 0.9
+    # this is provided in the source repo for MultiWOZ 2.1
+    use_canonical_map: true
+
+  # how to treat slots which have multiple values in the
+  # same turn e.g. (Area, "in town"), (Area, "west")
+  multiple_values_for_slot_in_turn:
+    # true: merge values by space (e.g., value is "in town west" for the above example)
+    # false: create a separate action per value
+    merge: false
+
+# should be used for MultiWOZ 2.1. Applied to both metrics
+use_lowercase: true
