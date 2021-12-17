@@ -1,0 +1,16 @@
+name: gcdf1
+channels:
+  - defaults
+  - conda-forge
+  - pytorch
+  # - fastai
+dependencies:
+  - pytest>=6.2.3, <7.0.0
+  - pytest-cov
+  - tox
+  - pre_commit
+  - nbdime
+  #- nbstripout
+  - sphinx
+  - recommonmark
+  - flake8>=3.9.1, <4.0.0
