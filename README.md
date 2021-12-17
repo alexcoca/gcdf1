@@ -81,6 +81,9 @@ We also added the following field to each turn:
 
    1. `nlu`. This field contains a single key `frames` with the same structure as the turn (i.e., an `actions` key which stores a list of actions recognised by the agent and a `service` key which indicates the domain). The evaluator will still work if this is not in the schema - NLU validation features should be disabled in the evaluator config in this case.
 
+The evaluator outputs a complex hierarchical structure containing the behaviours detected for each metric. See the
+documentation of the `gcdf1.utils.multiwoz_output.py` module for an overview of the behaviours.
+
 ## Reproducing our results
 Make sure you have activated the `gcdf1` environment and install `jupyter` with the command
 
@@ -103,9 +106,10 @@ your endeavour and thus provide the community with a tool to reliably measure th
 
 ### Adding NLG metrics
 
-The canonical map for the MultiWOZ 2.1 version contains over 10000x` value paraphrases extracted from the corpus. It
+The canonical map for the MultiWOZ 2.1 version contains over 10000 value paraphrases extracted from the corpus. It
 is thus straightforward to implement a more robust slot-error rate metric. The author is happy to provide basic code for
-this and implementation guidance. Integration of NLG metrics proposed in [this paper](https://aclanthology.org/2021.gem-1.4/)
+this and implementation guidance. The starting point could be the `value_generated` function implemented in the
+`gcdf1.utils.evaluator` module. Integration of NLG metrics proposed in [this paper](https://aclanthology.org/2021.gem-1.4/)
 is also desired.
 
 Any SER-like metric can be integrated in the current framework to compute F1 scores based on natural language as opposed
