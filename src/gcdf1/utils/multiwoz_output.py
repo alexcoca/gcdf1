@@ -19,24 +19,24 @@ metadata_to_agg = (
     [
         "igcd_f1",
         "sys_preempted_constraint",
-    ],  # dials where a missing constraint is found in sys turns (see gcdf1.metrics.compute_igcdf1) # noqa
+    ],  # dials where a missing constraint is found in sys turns (see gcdf1.metrics.compute_igcdf1)
     [
         "igcd_f1",
         "single_repetitions_nog",
-    ],  # dials where a constraint that is not in goal is repeated only once (see gcdf1.metrics.compute_igcdf1) # noqa
+    ],  # dials where a constraint that is not in goal is repeated only once (see gcdf1.metrics.compute_igcdf1)
     [
         "igcd_f1",
         "missed_constraints",
-    ],  # dials where a constraint was missed and not informed with a wrong value (see gcdf1.metrics._detect_empty_db_response)  # noqa
+    ],  # dials where a constraint was missed and not informed with a wrong value (see gcdf1.metrics._detect_empty_db_response)
     [
         "igcd_f1",
         "informed_wrong_value",
-    ],  # dials where a constraint was contained the wrong value as opposed to being completely missed (see gcdf1.metrics._detect_empty_db_response) # noqa
+    ],  # dials where a constraint was contained the wrong value as opposed to being completely missed (see gcdf1.metrics._detect_empty_db_response)
     [
         "igcd_f1",
         "failed_dialogue",
-    ],  # dials where missing constraints occur due to the fact that the DB did not return any results (e.g., booking constraints are not expressed  # noqa
-    # because a rest was not found (see gcdf1.metrics._detect_empty_db_response) # noqa
+    ],  # dials where missing constraints occur due to the fact that the DB did not return any results (e.g., booking constraints are not expressed
+    # because a rest was not found (see gcdf1.metrics._detect_empty_db_response)
     [
         "igcd_f1",
         "missed_domain",
@@ -45,7 +45,7 @@ metadata_to_agg = (
         "igcd_f1",
         "constraints_not_in_goal",
         "auto_matched_slot",
-    ],  # dials where a constraint is not penalised because it contains a certain slot (see constraints_not_in_goal.auto_matching options and gcdf1.metrics._is_auto_matched)  # noqa
+    ],  # dials where a constraint is not penalised because it contains a certain slot (see constraints_not_in_goal.auto_matching options and gcdf1.metrics._is_auto_matched)
     [
         "igcd_f1",
         "constraints_not_in_goal",
@@ -60,17 +60,17 @@ metadata_to_agg = (
         "igcd_f1",
         "constraints_not_in_goal",
         "elicited_by_sys_question",
-    ],  # dials where a constraint not in goal is due to system behaviour (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint) # noqa
+    ],  # dials where a constraint not in goal is due to system behaviour (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint)
     [
         "igcd_f1",
         "constraints_not_in_goal",
         "elicited_by_sys_offer",
-    ],  # dials where the user expresses a constraint not in goal after the system made an offer (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint) # noqa
+    ],  # dials where the user expresses a constraint not in goal after the system made an offer (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint)
     [
         "igcd_f1",
         "constraints_not_in_goal",
         "elicited_by_booking_failure",
-    ],  # dials where the user expresses a constraint not in goal after a booking failure (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint) # noqa
+    ],  # dials where the user expresses a constraint not in goal after a booking failure (see gcdf1.behaviours.multiwoz.system_elicited_new_constraint)
     [
         "igcd_f1",
         "constraints_not_in_goal",
@@ -95,47 +95,47 @@ metadata_to_agg = (
         "igcd_f1",
         "multiple_constraint_informs",
         "elicited_by_sys_question",
-    ],  # dials where constraint is repeated because sys asked (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition) # noqa
+    ],  # dials where constraint is repeated because sys asked (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "elicited_by_no_offers",
-    ],  # dials where constraint is repeated because there was no DB result (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition) # noqa
+    ],  # dials where constraint is repeated because there was no DB result (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "nobook_validation_failure",
-    ],  # sanity check, this is not a behaviour  # noqa
+    ],  # sanity check, this is not a behaviour
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "nooffer_validation_failure",
-    ],  # sanity check, this is not a behaviour  # noqa
+    ],  # sanity check, this is not a behaviour
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "confirmed_choice_params",
-    ],  # dials where a constraint is repeated as a confirmation of attributes (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition)  # noqa
+    ],  # dials where a constraint is repeated as a confirmation of attributes (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "repeated_while_requesting_info",
-    ],  # dials where a constraint is repeated as info is requested (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition)         # noqa
+    ],  # dials where a constraint is repeated as info is requested (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "repeated_while_booking",
-    ],  # dials where a constraint is repeated during a conversation about a transaction (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition) # noqa
+    ],  # dials where a constraint is repeated during a conversation about a transaction (see  gcdf1.behaviours.multiwoz.is_behavioural_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "repeated_when_answering_request",
-    ],  # dials where a constraint is repeated when answering a sys request (see gcdf1.behaviours.multiwoz.is_behavioural_repetition) # noqa
+    ],  # dials where a constraint is repeated when answering a sys request (see gcdf1.behaviours.multiwoz.is_behavioural_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "switched_between_domains",
-    ],  # dials where a constraints is repeated to remind system of previous conversation after a different domain has been discussed (see gcdf1.behaviours.multiwoz.is_behavioural_repetition) # noqa
+    ],  # dials where a constraints is repeated to remind system of previous conversation after a different domain has been discussed (see gcdf1.behaviours.multiwoz.is_behavioural_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
@@ -145,17 +145,17 @@ metadata_to_agg = (
         "igcd_f1",
         "multiple_constraint_informs",
         "unmatched",
-    ],  # dials where the user repetition cannot be explained by any sys/usr behaviour  # noqa
+    ],  # dials where the user repetition cannot be explained by any sys/usr behaviour
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "failed_sys_nlu",
-    ],  # dials where repetitions occurred because sys did not understand the constraint (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition) # noqa
+    ],  # dials where repetitions occurred because sys did not understand the constraint (see gcdf1.behaviours.multiwoz.is_system_elicited_repetition)
     [
         "igcd_f1",
         "multiple_constraint_informs",
         "elicited_by_booking_failure",
-    ],  # dials where repetitions occurred because a booking was not successful # noqa
+    ],  # dials where repetitions occurred because a booking was not successful
     ["igcd_f1", "wrong_taxi_annotations"],  # heuristic, ignore
     [
         "igcd_f1",
