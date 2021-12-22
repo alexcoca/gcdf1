@@ -69,7 +69,7 @@ def print_dialogue_outline(
         If `True`, the intent is shown for each user utterance
     """
     outlines = get_dialogue_outline(dialogue)
-    utterances = get_utterances(dialogue) if text else [""] * len(outlines)
+    utterances = get_utterances(dialogue) if text else [""] * len(outlines["dialogue"])
     intents = get_intent_by_turn(dialogue) if show_intent else []
     has_nlu = any(action_dict for action_dict in outlines["nlu"])
     assert len(outlines["dialogue"]) == len(utterances)
